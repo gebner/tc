@@ -227,7 +227,7 @@ normalize_level l = let p = to_offset l in case fst p of
                         in but_last ++ [last]
         explicits = case explicit of
           Nothing -> []
-          Just x -> if snd (to_offset x) < maximum (map (snd . to_offset) non_explicits) then [] else [x]
+          Just x -> if snd (to_offset x) <= maximum (map (snd . to_offset) non_explicits) then [] else [x]
         all_args = explicits ++ non_explicits
         lifted_args = map (flip mk_iterated_succ (snd p)) all_args
     in

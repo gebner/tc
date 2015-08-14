@@ -106,7 +106,9 @@ normalize_spec1 :: Spec
 normalize_spec1 =
   let u = mk_global_univ (mk_name ["u"])
       v = mk_global_univ (mk_name ["v"])
-      z = mk_zero in do
+      z = mk_zero
+      one = mk_succ z
+      two = mk_succ one in do
     describe "normalize1" $ do
       it "max should ignore zeros" $ do
         (normalize_level $ mk_max z (mk_max u (mk_succ z)))
@@ -122,6 +124,10 @@ normalize_spec1 =
         (normalize_level $ mk_max (mk_succ (mk_max (mk_succ v) u)) (mk_max v (mk_succ (mk_succ u))))
           `shouldBe`
           (mk_max (mk_succ (mk_succ u)) (mk_succ (mk_succ v)))
+      it "should remove irrelevant explicit levels" $ do
+        (normalize_level $ mk_max (mk_succ u) (mk_max (mk_max u one) (mk_max one u)))
+          `shouldBe`
+          (mk_succ u)
         
 level_leq_spec1 :: Spec
 level_leq_spec1 = do
